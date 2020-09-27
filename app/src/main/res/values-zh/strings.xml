@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources>
+    <string name="app_name">Q新闻</string>
+    <string name="topic_popular">热门</string>
+    <string name="topic_society">社会</string>
+    <string name="topic_domestic">国内</string>
+    <string name="topic_international">国际</string>
+    <string name="topic_entertainment">娱乐</string>
+    <string name="topic_physical_education">体育</string>
+    <string name="topic_military">军事</string>
+    <string name="topic_technology">技术</string>
+    <string name="topic_finance">财务</string>
+    <string name="topic_fashion">时尚</string>
+    <string name="news_picture_one">新闻图片一</string>
+    <string name="news_picture_two">新闻图片二</string>
+    <string name="news_picture_three">新闻图片三</string>
+</resources>

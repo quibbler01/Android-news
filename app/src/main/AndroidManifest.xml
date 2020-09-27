@@ -20,12 +20,13 @@
             android:name="key"
             android:value="9e7168cce16f7abca0a36c33657b1cc9" />
 
-        <activity android:name=".NewsActivity">
+        <activity
+            android:name=".NewsActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
 
