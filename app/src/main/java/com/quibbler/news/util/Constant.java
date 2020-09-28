@@ -14,6 +14,7 @@ public class Constant {
      */
     public static final String URL = "http://v.juhe.cn/toutiao/index?type=%s&key=%s";
     public static final String[] TOPICS_TYPE = {"top", "shehui", "guonei", "guoji", "yule", "tiyu", "junshi", "keji", "caijing", "shishang"};
+    public static final String SUCCESS_CODE = "成功的返回";
 
     public static final int[] TOPICS_STRING = {R.string.topic_popular, R.string.topic_society, R.string.topic_domestic,
             R.string.topic_international, R.string.topic_entertainment, R.string.topic_physical_education,

@@ -10,4 +10,11 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="NewsDescriptionTextTheme" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/newsDescriptionColor</item>
+        <item name="android:textSize">@dimen/new_title_description</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>

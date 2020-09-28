@@ -1,9 +1,11 @@
 package com.quibbler.news;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 import com.quibbler.news.model.bean.NewsDataBean;
@@ -15,6 +17,8 @@ import com.quibbler.news.view.callback.NewsCallback;
 import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements NewsCallback {
+    private static final String TAG = "TAG_NewsActivity";
+
     private NewsPresenter mPresenter;
 
     //View
@@ -24,6 +28,7 @@ public class NewsActivity extends AppCompatActivity implements NewsCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
@@ -31,12 +36,39 @@ public class NewsActivity extends AppCompatActivity implements NewsCallback {
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "onStart");
         super.onStart();
         initPresenter();
     }
 
     @Override
+    protected void onRestart() {
+        Log.d(TAG, "onRestart");
+        super.onRestart();
+    }
+
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
         releasePresenter();
     }
@@ -80,18 +112,21 @@ public class NewsActivity extends AppCompatActivity implements NewsCallback {
     }
 
     private void initPresenter() {
+        Log.d(TAG, "initPresenter");
         mPresenter = NewsPresenter.getNewsPresenter();
         mPresenter.subscribeCallback(this);
-//        mPresenter.initData();
+        mPresenter.initData();
     }
 
     private void releasePresenter() {
+        Log.d(TAG, "releasePresenter");
         mPresenter.release();
         mPresenter = null;
     }
 
     @Override
-    public void onNewsTopicUpdate(int type, List<NewsDataBean> dataBeans) {
+    public void onNewsTopicUpdate(@NonNull int type, @NonNull List<NewsDataBean> dataBeans) {
+        Log.d(TAG, "Callback onNewsTopicUpdate " + dataBeans.size());
         mViewPager2Adapter.updateTopic(type, dataBeans);
     }
 }

@@ -3,6 +3,7 @@ package com.quibbler.news.model;
 import android.util.Log;
 
 import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 
 import com.google.gson.Gson;
@@ -49,6 +50,7 @@ public class NewsNetWorkModel {
      * @param type news type
      */
     @WorkerThread
+    @NonNull
     public List<NewsDataBean> updateNewsData(final String type) {
         List<NewsDataBean> news = new ArrayList<>();
         String url = NetWorkUtil.buildUrl(type, mKey);
@@ -59,7 +61,11 @@ public class NewsNetWorkModel {
         try {
             Gson gson = new Gson();
             RequestBean requestBean = gson.fromJson(result, RequestBean.class);
-            news = requestBean.getResult().getData();
+            String code = requestBean.getReason();
+            Log.d(TAG, " request result code = " + code);
+            if (Constant.SUCCESS_CODE.equals(code)) {
+                news = requestBean.getResult().getData();
+            }
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }

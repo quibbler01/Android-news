@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/news_item_margin_top">
 
     <TextView
         android:id="@+id/news_title"
@@ -9,12 +10,14 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="start|center"
-        android:maxLines="4" />
+        android:maxLines="4"
+        android:textSize="@dimen/new_title_size" />
 
     <LinearLayout
-        android:id="@+id/picture"
+        android:id="@+id/picture_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/news_title"
         android:orientation="horizontal"
         android:visibility="gone">
 
@@ -46,5 +49,45 @@
             android:visibility="gone" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/picture_container"
+        android:gravity="start|center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/author_name"
+            style="@style/NewsDescriptionTextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/new_description_margin" />
+
+        <TextView
+            android:id="@+id/category"
+            style="@style/NewsDescriptionTextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/new_description_margin" />
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/NewsDescriptionTextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/new_description_margin" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/description"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/news_item_margin_bottom"
+        android:background="@color/news_item_divide_line" />
 
 </RelativeLayout>
