@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="new_title_size">20dp</dimen>
-    <dimen name="new_title_description">14dp</dimen>
+    <dimen name="new_title_text_size">20dp</dimen>
+    <dimen name="new_description_text_size">14dp</dimen>
     <dimen name="new_description_margin">5dp</dimen>
-    <dimen name="news_item_margin_top">10dp</dimen>
-    <dimen name="news_item_margin_bottom">10dp</dimen>
+    <dimen name="new_picture_width">160dp</dimen>
+    <dimen name="new_picture_height">120dp</dimen>
+    <dimen name="new_picture_margin">5dp</dimen>
+    <dimen name="news_item_margin_top">12dp</dimen>
+    <dimen name="news_item_margin_bottom">12dp</dimen>
 </resources>

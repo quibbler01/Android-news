@@ -1,9 +1,11 @@
 package com.quibbler.news.view.adapter;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +19,20 @@ import com.bumptech.glide.Glide;
 import com.quibbler.news.NewsApplication;
 import com.quibbler.news.R;
 import com.quibbler.news.model.bean.NewsDataBean;
+import com.quibbler.news.view.NewsDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
+public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolderBase> {
     private static final String TAG = "TAG_NewsRecyclerViewAdapter";
 
     private Context mContext;
     private int mNewsType = 0;
     private List<NewsDataBean> mNewsData = new ArrayList<>();
 
-    public NewsRecyclerViewAdapter() {
-        this.mContext = NewsApplication.getApplication();
+    public NewsRecyclerViewAdapter(Context context) {
+        this.mContext = context;
     }
 
     public NewsRecyclerViewAdapter(Context mContext, List<NewsDataBean> mNewsData) {
@@ -39,43 +42,78 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_item_view, parent, false);
-        return new ViewHolder(view);
+    public NewsRecyclerViewAdapter.ViewHolderBase onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        NewsRecyclerViewAdapter.ViewHolderBase viewHolder = null;
+        switch (viewType) {
+            case NewsDataBean.TYPE_ONE:
+                View viewOne = LayoutInflater.from(mContext).inflate(R.layout.recycler_item_first_view, parent, false);
+                viewHolder = new ViewHolderBase(viewOne);
+                break;
+            case NewsDataBean.TYPE_ZERO:
+            case NewsDataBean.TYPE_TWO:
+            case NewsDataBean.TYPE_THREE:
+            default:
+                View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_item_view, parent, false);
+                viewHolder = new ViewHolder(view);
+                break;
+        }
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NewsRecyclerViewAdapter.ViewHolderBase holder, int position) {
         final NewsDataBean newsData = mNewsData.get(position);
+        holder.itemView.setTag(newsData);
+        holder.itemView.setOnClickListener(mOnClickListener);
+
         //title
         holder.title.setText(Html.fromHtml(newsData.getTitle()));
-        //image
-        if (TextUtils.isEmpty(newsData.getThumbnail_pic_s()) && TextUtils.isEmpty(newsData.getThumbnail_pic_s02()) && TextUtils.isEmpty(newsData.getThumbnail_pic_s03())) {
-            holder.pictureArea.setVisibility(View.GONE);
-        } else {
-            holder.pictureArea.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s())) {
-                holder.newsImageOne.setVisibility(View.VISIBLE);
-                Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.ic_launcher_background).into(holder.newsImageOne);
-            }
-            if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s02())) {
-                holder.newsImageTwo.setVisibility(View.VISIBLE);
-                Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s02()).placeholder(R.drawable.ic_launcher_background).into(holder.newsImageTwo);
-            }
-            if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s03())) {
-                holder.newsImageThree.setVisibility(View.VISIBLE);
-                Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s03()).placeholder(R.drawable.ic_launcher_background).into(holder.newsImageThree);
-            }
-        }
         //author、category、time
         holder.author.setText(newsData.getAuthor_name());
         holder.category.setText(newsData.getCategory());
         holder.date.setText(newsData.getDate());
+
+        int type = getItemViewType(position);
+        switch (type) {
+            case NewsDataBean.TYPE_ONE:
+                holder.title.setText(Html.fromHtml(newsData.getTitle()));
+                Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.news_item_picture_default).into(holder.newsImageOne);
+                break;
+            case NewsDataBean.TYPE_ZERO:
+            case NewsDataBean.TYPE_TWO:
+            case NewsDataBean.TYPE_THREE:
+            default:
+                ViewHolder viewHolder = (ViewHolder) holder;
+                //image
+                if (TextUtils.isEmpty(newsData.getThumbnail_pic_s()) && TextUtils.isEmpty(newsData.getThumbnail_pic_s02()) && TextUtils.isEmpty(newsData.getThumbnail_pic_s03())) {
+                    viewHolder.pictureArea.setVisibility(View.GONE);
+                } else {
+                    viewHolder.pictureArea.setVisibility(View.VISIBLE);
+                    if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s())) {
+                        viewHolder.newsImageOne.setVisibility(View.VISIBLE);
+                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageOne);
+                    }
+                    if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s02())) {
+                        viewHolder.newsImageTwo.setVisibility(View.VISIBLE);
+                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s02()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageTwo);
+                    }
+                    if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s03())) {
+                        viewHolder.newsImageThree.setVisibility(View.VISIBLE);
+                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s03()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageThree);
+                    }
+                }
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
         return mNewsData.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mNewsData.get(position).getNewsType();
     }
 
     public void updateData(@NonNull List<NewsDataBean> newsData) {
@@ -84,30 +122,56 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolderBase extends RecyclerView.ViewHolder {
         //title
-        private TextView title;
+        TextView title;
         //image
-        private View pictureArea;
-        private ImageView newsImageOne;
-        private ImageView newsImageTwo;
-        private ImageView newsImageThree;
+        ImageView newsImageOne;
         //description
-        private TextView author;
-        private TextView category;
-        private TextView date;
+        TextView author;
+        TextView category;
+        TextView date;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolderBase(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.news_title);
-            pictureArea = itemView.findViewById(R.id.picture_container);
             newsImageOne = itemView.findViewById(R.id.news_picture_one);
-            newsImageTwo = itemView.findViewById(R.id.news_picture_two);
-            newsImageThree = itemView.findViewById(R.id.news_picture_three);
             author = itemView.findViewById(R.id.author_name);
             category = itemView.findViewById(R.id.category);
             date = itemView.findViewById(R.id.date);
         }
     }
+
+    public static class ViewHolder extends ViewHolderBase {
+        //image
+        View pictureArea;
+        ImageView newsImageTwo;
+        ImageView newsImageThree;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            pictureArea = itemView.findViewById(R.id.picture_container);
+            newsImageTwo = itemView.findViewById(R.id.news_picture_two);
+            newsImageThree = itemView.findViewById(R.id.news_picture_three);
+        }
+    }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            NewsDataBean newsDataBean = (NewsDataBean) v.getTag();
+            if (null == newsDataBean) {
+                return;
+            }
+            Intent intent = new Intent();
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName(mContext, NewsDetailActivity.class));
+            intent.putExtra(NewsDetailActivity.NEWS_URL, newsDataBean.getUrl());
+            String title = newsDataBean.getTitle();
+            intent.putExtra(NewsDetailActivity.NEWS_TITLE, title.substring(0, Math.min(title.length(), NewsDetailActivity.NEWS_TITLE_LENGTH)));
+            ((Activity) mContext).startActivity(intent);
+        }
+    };
+
 
 }

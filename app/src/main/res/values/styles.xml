@@ -6,13 +6,24 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/white</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="NewsActivityTheme" parent="Theme.AppCompat.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+
     <style name="NewsDescriptionTextTheme" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/newsDescriptionColor</item>
-        <item name="android:textSize">@dimen/new_title_description</item>
+        <item name="android:textSize">@dimen/new_description_text_size</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>

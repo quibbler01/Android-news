@@ -1,5 +1,7 @@
 package com.quibbler.news.model.bean;
 
+import android.text.TextUtils;
+
 /**
  * News Request Data
  *
@@ -15,6 +17,11 @@ package com.quibbler.news.model.bean;
  * thumbnail_pic_s03 : http://02imgmini.eastday.com/mobile/20200926/2020092612_f27f1e290bcb4353ae68ebbf7c844aac_4038_mwpm_03200403.jpg
  */
 public class NewsDataBean {
+    public static final int TYPE_ZERO = 0;
+    public static final int TYPE_ONE = 1;
+    public static final int TYPE_TWO = 2;
+    public static final int TYPE_THREE = 3;
+
     private String uniquekey;
     private String title;
     private String date;
@@ -24,6 +31,7 @@ public class NewsDataBean {
     private String thumbnail_pic_s;
     private String thumbnail_pic_s02;
     private String thumbnail_pic_s03;
+    private int type = -1;
 
     public NewsDataBean(String title) {
         this.title = title;
@@ -39,6 +47,7 @@ public class NewsDataBean {
         this.thumbnail_pic_s = thumbnail_pic_s;
         this.thumbnail_pic_s02 = thumbnail_pic_s02;
         this.thumbnail_pic_s03 = thumbnail_pic_s03;
+        this.type = whichType();
     }
 
     public String getUniquekey() {
@@ -111,5 +120,23 @@ public class NewsDataBean {
 
     public void setThumbnail_pic_s03(String thumbnail_pic_s03) {
         this.thumbnail_pic_s03 = thumbnail_pic_s03;
+    }
+
+    public int whichType() {
+        int type = 0;
+        if (!TextUtils.isEmpty(thumbnail_pic_s)) {
+            ++type;
+        }
+        if (!TextUtils.isEmpty(thumbnail_pic_s02)) {
+            ++type;
+        }
+        if (!TextUtils.isEmpty(thumbnail_pic_s03)) {
+            ++type;
+        }
+        return type;
+    }
+
+    public int getNewsType() {
+        return whichType();
     }
 }

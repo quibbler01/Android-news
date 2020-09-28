@@ -32,18 +32,22 @@ public class NewsNetWorkModel {
      * update all type news
      */
     @WorkerThread
-    public void updateAllNewsData() {
-        updateNewsData(Constant.TOPICS_TYPE);
+    public List<List<NewsDataBean>> updateAllNewsData() {
+        return updateNewsData(/*new String[]{"top"}*/ Constant.TOPICS_TYPE);
     }
 
     /**
      * @param types news type list
      */
     @WorkerThread
-    public void updateNewsData(String[] types) {
+    public List<List<NewsDataBean>> updateNewsData(String[] types) {
+        List<List<NewsDataBean>> mNewsData = new ArrayList<>(Constant.TOPICS_POSITION.length);
         for (String type : types) {
-            updateNewsData(type);
+            List<NewsDataBean> dataBeans = new ArrayList<>();
+            dataBeans = updateNewsData(type);
+            mNewsData.add(dataBeans);
         }
+        return mNewsData;
     }
 
     /**

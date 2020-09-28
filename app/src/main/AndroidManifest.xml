@@ -15,18 +15,23 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <!--News API key-->
+        <!-- News API key -->
         <meta-data
             android:name="key"
             android:value="9e7168cce16f7abca0a36c33657b1cc9" />
+
+        <activity
+            android:name=".view.NewsDetailActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/NewsActivityTheme" />
 
         <activity
             android:name=".NewsActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 

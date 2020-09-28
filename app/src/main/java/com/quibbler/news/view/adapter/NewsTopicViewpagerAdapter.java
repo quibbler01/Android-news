@@ -53,6 +53,7 @@ public class NewsTopicViewpagerAdapter extends RecyclerView.Adapter<NewsTopicVie
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         viewHolder.mRecyclerView.setLayoutManager(layoutManager);
+        viewHolder.mAdapter = new NewsRecyclerViewAdapter(mContext);
         return viewHolder;
     }
 
@@ -69,6 +70,12 @@ public class NewsTopicViewpagerAdapter extends RecyclerView.Adapter<NewsTopicVie
         return mNewsData.size();
     }
 
+    public void updateNews(List<List<NewsDataBean>> newsData) {
+        mNewsData.clear();
+        mNewsData.addAll(newsData);
+        notifyDataSetChanged();
+    }
+
     public void updateTopic(int typePosition, List<NewsDataBean> newsData) {
         mNewsData.set(typePosition, newsData);
         notifyItemChanged(typePosition);
@@ -82,7 +89,6 @@ public class NewsTopicViewpagerAdapter extends RecyclerView.Adapter<NewsTopicVie
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mRecyclerView = itemView.findViewById(R.id.news_recyclerview);
-            mAdapter = new NewsRecyclerViewAdapter();
         }
     }
 

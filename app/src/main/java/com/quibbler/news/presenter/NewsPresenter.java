@@ -60,11 +60,11 @@ public class NewsPresenter {
             @Override
             public void run() {
                 if (null != mNewsModel) {
-                    final List<NewsDataBean> data = mNewsModel.updateNewsData("top");
+                    final List<List<NewsDataBean>> result = mNewsModel.updateAllNewsData();
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mCallback.onNewsTopicUpdate(0, data);
+                            mCallback.onNewsUpdate(result);
                         }
                     });
                 }

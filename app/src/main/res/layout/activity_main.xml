@@ -11,8 +11,10 @@
         android:id="@+id/news_title_tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         app:tabGravity="fill"
         app:tabIndicator="@color/red"
+        app:tabIndicatorFullWidth="false"
         app:tabMode="scrollable" />
 
     <androidx.viewpager2.widget.ViewPager2

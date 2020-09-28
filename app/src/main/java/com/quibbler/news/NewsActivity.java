@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.google.android.material.tabs.TabLayout;
 import com.quibbler.news.model.bean.NewsDataBean;
@@ -32,13 +33,13 @@ public class NewsActivity extends AppCompatActivity implements NewsCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initPresenter();
     }
 
     @Override
     protected void onStart() {
         Log.d(TAG, "onStart");
         super.onStart();
-        initPresenter();
     }
 
     @Override
@@ -71,6 +72,21 @@ public class NewsActivity extends AppCompatActivity implements NewsCallback {
         Log.d(TAG, "onDestroy");
         super.onDestroy();
         releasePresenter();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void initView() {
@@ -128,5 +144,10 @@ public class NewsActivity extends AppCompatActivity implements NewsCallback {
     public void onNewsTopicUpdate(@NonNull int type, @NonNull List<NewsDataBean> dataBeans) {
         Log.d(TAG, "Callback onNewsTopicUpdate " + dataBeans.size());
         mViewPager2Adapter.updateTopic(type, dataBeans);
+    }
+
+    @Override
+    public void onNewsUpdate(List<List<NewsDataBean>> dataBeans) {
+        mViewPager2Adapter.updateNews(dataBeans);
     }
 }

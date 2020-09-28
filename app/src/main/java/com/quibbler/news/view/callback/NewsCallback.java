@@ -10,5 +10,6 @@ public interface NewsCallback {
 
     @MainThread
     void onNewsTopicUpdate(int type, List<NewsDataBean> dataBeans);
+    void onNewsUpdate(List<List<NewsDataBean>> dataBeans);
 
 }
