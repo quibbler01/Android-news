@@ -30,13 +30,6 @@ public class NewsTopicViewpagerAdapter extends RecyclerView.Adapter<NewsTopicVie
         this.mContext = context;
         for (int pos : Constant.TOPICS_POSITION) {
             mNewsData.add(new ArrayList<NewsDataBean>());
-            if (TestConfig.TEST) {
-                List<NewsDataBean> dataBeans = new ArrayList<>();
-                for (int i = 0; i < 10; ++i) {
-                    dataBeans.add(new NewsDataBean(TestData.title));
-                }
-                mNewsData.set(pos, dataBeans);
-            }
         }
     }
 
@@ -66,7 +59,7 @@ public class NewsTopicViewpagerAdapter extends RecyclerView.Adapter<NewsTopicVie
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, " " + mNewsData.size());
+        Log.d(TAG, "getItemCount " + mNewsData.size());
         return mNewsData.size();
     }
 

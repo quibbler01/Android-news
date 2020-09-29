@@ -33,10 +33,6 @@ public class NewsDataBean {
     private String thumbnail_pic_s03;
     private int type = -1;
 
-    public NewsDataBean(String title) {
-        this.title = title;
-    }
-
     public NewsDataBean(String uniquekey, String title, String date, String category, String author_name, String url, String thumbnail_pic_s, String thumbnail_pic_s02, String thumbnail_pic_s03) {
         this.uniquekey = uniquekey;
         this.title = title;

@@ -13,9 +13,15 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:tabGravity="fill"
-        app:tabIndicator="@color/red"
+        app:tabIndicatorColor="@color/red"
         app:tabIndicatorFullWidth="false"
-        app:tabMode="scrollable" />
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorHeight="@dimen/news_tab_indicator_height"
+        app:tabMode="scrollable"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabSelectedTextColor="@color/red"
+        app:tabTextColor="@color/black"
+        app:tabUnboundedRipple="false" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/news_content_viewpager2"

@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
+import com.quibbler.news.BuildConfig;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,7 +55,9 @@ public class NetWorkUtil {
             Log.d(TAG, " request with empty url ?!");
             return null;
         }
-
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "requestFromNetWork " + url);
+        }
         InputStream inputStream = null;
         BufferedReader reader = null;
         HttpURLConnection httpURLConnection = null;
@@ -73,7 +77,7 @@ public class NetWorkUtil {
             }
             return stringBuilder.toString();
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            Log.e(TAG, e.toString());
         } finally {
             Utils.close(inputStream);
             Utils.close(reader);

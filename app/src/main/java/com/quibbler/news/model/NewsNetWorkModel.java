@@ -33,7 +33,7 @@ public class NewsNetWorkModel {
      */
     @WorkerThread
     public List<List<NewsDataBean>> updateAllNewsData() {
-        return updateNewsData(/*new String[]{"top"}*/ Constant.TOPICS_TYPE);
+        return updateNewsData(Constant.TOPICS_TYPE);
     }
 
     /**
@@ -64,6 +64,7 @@ public class NewsNetWorkModel {
         String result = NetWorkUtil.requestFromNetWork(url);
         try {
             Gson gson = new Gson();
+            Log.d(TAG, "******** " + result);
             RequestBean requestBean = gson.fromJson(result, RequestBean.class);
             String code = requestBean.getReason();
             Log.d(TAG, " request result code = " + code);
@@ -71,7 +72,7 @@ public class NewsNetWorkModel {
                 news = requestBean.getResult().getData();
             }
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            Log.e(TAG, e.toString());
         }
         Log.d(TAG, "news type: " + type + " result size " + news.size());
         return news;

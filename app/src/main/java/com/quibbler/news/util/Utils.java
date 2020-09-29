@@ -31,7 +31,7 @@ public class Utils {
             ApplicationInfo ai = pm.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             value = ai.metaData.getString(key);
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            Log.e(TAG, e.toString());
         }
         return value;
     }
@@ -40,7 +40,7 @@ public class Utils {
         try {
             closeable.close();
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 
@@ -49,7 +49,7 @@ public class Utils {
             try {
                 connection.disconnect();
             } catch (Exception e) {
-                Log.d(TAG, e.toString());
+                Log.e(TAG, e.toString());
             }
         }
     }
