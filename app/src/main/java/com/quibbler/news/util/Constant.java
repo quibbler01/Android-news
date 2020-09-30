@@ -4,6 +4,7 @@ import com.quibbler.news.R;
 
 public class Constant {
 
+    //News API key
     public static final String KEYNAME = "key";
 
     /**
@@ -20,8 +21,5 @@ public class Constant {
             R.string.topic_international, R.string.topic_entertainment, R.string.topic_physical_education,
             R.string.topic_military, R.string.topic_technology, R.string.topic_finance, R.string.topic_fashion};
     public static final int[] TOPICS_POSITION = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-    public static final String SHARED_PREFERENCE_NAME = "news_pref";
-    public static final String PREFERENCE_KEY_LAST_CACHED_TIME = "pref_last_cached_time";
 
 }

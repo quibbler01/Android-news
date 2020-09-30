@@ -4,15 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class PreferenceUtil {
     private static final String TAG = "TAG_PreferenceUtil";
 
+    public static final String SHARED_PREFERENCE_NAME = "news_pref";
+    public static final String PREFERENCE_KEY_LAST_CACHED_TIME = "pref_last_cached_time";
+
     private static SharedPreferences sSharedPreference;
 
     public static void init(Context context) {
-        sSharedPreference = context.getSharedPreferences(Constant.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        sSharedPreference = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
     }
 
     public static void setValue(@NonNull String key, @NonNull Object value) {

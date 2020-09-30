@@ -45,7 +45,7 @@ public class NewsPresenter {
     @MainThread
     public void initData() {
         Log.d(TAG, "initData");
-        long last = (Long) PreferenceUtil.getValue(Constant.PREFERENCE_KEY_LAST_CACHED_TIME, 0L);
+        long last = (Long) PreferenceUtil.getValue(PreferenceUtil.PREFERENCE_KEY_LAST_CACHED_TIME, 0L);
         if (last + NewsCacheModel.CACHED_VALID_TIME < System.currentTimeMillis()) {
             Log.d(TAG, "cache out of time,update from network");
             updateDataFromNetwork();

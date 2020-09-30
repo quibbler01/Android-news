@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,17 +17,22 @@ import android.webkit.WebViewClient;
 
 import com.quibbler.news.R;
 import com.quibbler.news.model.DataReport;
+import com.quibbler.news.model.NetWorkChangeReceiver;
+import com.quibbler.news.util.NetWorkUtil;
+import com.quibbler.news.view.callback.Receiver;
 
-public class NewsDetailActivity extends AppCompatActivity {
-    private static final String TAG = "TAG_NewsDetailActivity";
+public class NewsDetailActivity extends AppCompatActivity implements Receiver {
+    private static final String TAG = "NewsDetailActivity";
 
     public static final String NEWS_TITLE = "news_title";
     public static final int NEWS_TITLE_LENGTH = 18;
     public static final String NEWS_URL = "news_url";
 
     private WebView mWebView;
-    ActionBar mActionBar;
+    private ActionBar mActionBar;
+    private BroadcastReceiver mNetworkReceiver;
 
+    private boolean isLoadSuccess = false;
     private String mNewsTitle;
     private String mNewsUrl;
 
@@ -33,31 +40,31 @@ public class NewsDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
-
+        mNetworkReceiver = new NetWorkChangeReceiver(this);
         initView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = getIntent();
-        mNewsUrl = intent.getStringExtra(NEWS_URL);
-        mNewsTitle = intent.getStringExtra(NEWS_TITLE);
-        Log.d(TAG, "mNewsUrl : " + mNewsTitle + "\tmNewsUrl : " + mNewsUrl);
-        if (null != mActionBar) {
-            mActionBar.setTitle(mNewsTitle);
-        }
-        mWebView.loadUrl(mNewsUrl);
+        Log.d(TAG, "onStart ---> registerReceiver");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(NetWorkChangeReceiver.CONNECTIVITY_CHANGE);
+        registerReceiver(mNetworkReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG, "onStop ---> unregisterReceiver");
+        unregisterReceiver(mNetworkReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mNetworkReceiver = null;
+        mWebView.clearCache(true);
         mWebView = null;
     }
 
@@ -74,6 +81,9 @@ public class NewsDetailActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        if (!isLoadSuccess && NetWorkUtil.isNetWorkAvailable()) {
+            mWebView.reload();
+        }
     }
 
     private void initView() {
@@ -84,13 +94,32 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         mWebView = findViewById(R.id.news_web_view);
         mWebView.setWebViewClient(new WebViewClient());
-        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (100 == newProgress) {
+                    isLoadSuccess = true;
+                }
+            }
+        });
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setSupportZoom(false);
         webSettings.setDisplayZoomControls(false);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        Intent intent = getIntent();
+        mNewsUrl = intent.getStringExtra(NEWS_URL);
+        mNewsTitle = intent.getStringExtra(NEWS_TITLE);
+        Log.d(TAG, "mNewsUrl : " + mNewsTitle + "\tmNewsUrl : " + mNewsUrl);
+        if (null != mActionBar) {
+            mActionBar.setTitle(mNewsTitle);
+        }
+        if (NetWorkUtil.isNetWorkAvailable()) {
+            mWebView.loadUrl(mNewsUrl);
+        }
     }
 
     @Override
@@ -110,5 +139,15 @@ public class NewsDetailActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onReceive() {
+        Log.d(TAG, "onReceive " + isLoadSuccess);
+        if (!isLoadSuccess) {
+            if (NetWorkUtil.isNetWorkAvailable()) {
+                mWebView.loadUrl(mNewsUrl);
+            }
+        }
     }
 }

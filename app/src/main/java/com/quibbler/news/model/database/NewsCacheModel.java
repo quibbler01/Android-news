@@ -28,7 +28,7 @@ public class NewsCacheModel {
             cacheNewsToDataBase(result.get(pos), Constant.TOPICS_TYPE[pos]);
         }
         long end = System.currentTimeMillis();
-        PreferenceUtil.setValue(Constant.PREFERENCE_KEY_LAST_CACHED_TIME, System.currentTimeMillis());
+        PreferenceUtil.setValue(PreferenceUtil.PREFERENCE_KEY_LAST_CACHED_TIME, System.currentTimeMillis());
         Log.i(TAG, "cache all News To DataBase cost time : " + (end - start));
     }
 

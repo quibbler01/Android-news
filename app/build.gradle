@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\project\\quibbler.jks')
+            storePassword '614449644'
+            keyAlias 'Quibbler'
+            keyPassword '614449644'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
 
