@@ -2,7 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/news_item_margin_top">
+    android:background="@drawable/new_item_bg"
+    android:paddingStart="@dimen/news_item_padding_start"
+    android:paddingTop="@dimen/news_item_margin_top"
+    android:paddingEnd="@dimen/news_item_padding_end">
 
     <TextView
         android:id="@+id/news_title"
@@ -11,6 +14,7 @@
         android:ellipsize="end"
         android:gravity="start|center"
         android:maxLines="4"
+        android:textColor="@color/black"
         android:textSize="@dimen/new_title_text_size" />
 
     <LinearLayout
@@ -28,7 +32,7 @@
             android:layout_marginEnd="@dimen/new_picture_margin"
             android:layout_weight="1"
             android:contentDescription="@string/news_picture_one"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:visibility="gone" />
 
         <ImageView
@@ -38,7 +42,7 @@
             android:layout_marginEnd="@dimen/new_picture_margin"
             android:layout_weight="1"
             android:contentDescription="@string/news_picture_two"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:visibility="gone" />
 
         <ImageView
@@ -47,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/news_picture_three"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:visibility="gone" />
 
     </LinearLayout>

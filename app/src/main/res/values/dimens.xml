@@ -2,13 +2,17 @@
 <resources>
     <!--news RecyclerView item-->
     <dimen name="new_title_text_size">20dp</dimen>
-    <dimen name="new_description_text_size">14dp</dimen>
+    <dimen name="new_description_text_size">12dp</dimen>
     <dimen name="new_description_margin">5dp</dimen>
+
     <dimen name="new_picture_width">160dp</dimen>
     <dimen name="new_picture_height">120dp</dimen>
     <dimen name="new_picture_margin">5dp</dimen>
+
     <dimen name="news_item_margin_top">12dp</dimen>
     <dimen name="news_item_margin_bottom">12dp</dimen>
+    <dimen name="news_item_padding_start">10dp</dimen>
+    <dimen name="news_item_padding_end">10dp</dimen>
 
     <!--TabLayout-->
     <dimen name="news_tab_indicator_height">2dp</dimen>

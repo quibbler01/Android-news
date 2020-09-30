@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.quibbler.news.NewsApplication;
 import com.quibbler.news.R;
 import com.quibbler.news.model.bean.NewsDataBean;
@@ -30,9 +32,15 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     private Context mContext;
     private int mNewsType = 0;
     private List<NewsDataBean> mNewsData = new ArrayList<>();
+    private RequestOptions mImageGlideCorner = null;
+    private static final int CORNERS = 8;
 
     public NewsRecyclerViewAdapter(Context context) {
         this.mContext = context;
+        //设置图片圆角角度
+        RoundedCorners roundedCorners = new RoundedCorners(CORNERS);
+        //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
+        mImageGlideCorner = RequestOptions.bitmapTransform(roundedCorners);
     }
 
     public NewsRecyclerViewAdapter(Context mContext, List<NewsDataBean> mNewsData) {
@@ -77,7 +85,8 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         switch (type) {
             case NewsDataBean.TYPE_ONE:
                 holder.title.setText(Html.fromHtml(newsData.getTitle()));
-                Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.news_item_picture_default).into(holder.newsImageOne);
+//                Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.news_item_picture_default).into(holder.newsImageOne);
+                setImageByGlide(holder.newsImageOne, newsData.getThumbnail_pic_s());
                 break;
             case NewsDataBean.TYPE_ZERO:
             case NewsDataBean.TYPE_TWO:
@@ -91,19 +100,26 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
                     viewHolder.pictureArea.setVisibility(View.VISIBLE);
                     if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s())) {
                         viewHolder.newsImageOne.setVisibility(View.VISIBLE);
-                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageOne);
+//                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageOne);
+                        setImageByGlide(viewHolder.newsImageOne, newsData.getThumbnail_pic_s());
                     }
                     if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s02())) {
                         viewHolder.newsImageTwo.setVisibility(View.VISIBLE);
-                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s02()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageTwo);
+//                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s02()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageTwo);
+                        setImageByGlide(viewHolder.newsImageTwo, newsData.getThumbnail_pic_s02());
                     }
                     if (!TextUtils.isEmpty(newsData.getThumbnail_pic_s03())) {
                         viewHolder.newsImageThree.setVisibility(View.VISIBLE);
-                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s03()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageThree);
+//                        Glide.with(NewsApplication.getApplication()).load(newsData.getThumbnail_pic_s03()).placeholder(R.drawable.news_item_picture_default).into(viewHolder.newsImageThree);
+                        setImageByGlide(viewHolder.newsImageThree, newsData.getThumbnail_pic_s03());
                     }
                 }
                 break;
         }
+    }
+
+    private void setImageByGlide(ImageView image, String ulr) {
+        Glide.with(NewsApplication.getApplication()).load(ulr).apply(mImageGlideCorner).placeholder(R.drawable.news_item_picture_default).into(image);
     }
 
     @Override

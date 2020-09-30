@@ -13,5 +13,6 @@
     <!--recyclerview item color-->
     <color name="newsDescriptionColor">#8A8888</color>
     <color name="news_item_divide_line">#54E8E3E3</color>
+    <color name="new_item_press_bg">#f0f0f0</color>
 
 </resources>
