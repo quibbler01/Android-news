@@ -21,6 +21,11 @@
             android:name="key"
             android:value="9e7168cce16f7abca0a36c33657b1cc9" />
 
+        <!--Glide Configuration-->
+        <meta-data
+            android:name="GlideModule"
+            android:value="com.quibbler.news.NewsGlideModule" />
+
         <activity
             android:name=".view.NewsDetailActivity"
             android:enabled="true"

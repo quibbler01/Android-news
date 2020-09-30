@@ -29,7 +29,7 @@ public class NewsCacheModel {
         }
         long end = System.currentTimeMillis();
         PreferenceUtil.setValue(Constant.PREFERENCE_KEY_LAST_CACHED_TIME, System.currentTimeMillis());
-        Log.d(TAG, "cache all News To DataBase cost time : " + (end - start));
+        Log.i(TAG, "cache all News To DataBase cost time : " + (end - start));
     }
 
     @WorkerThread
@@ -55,7 +55,7 @@ public class NewsCacheModel {
         database.setTransactionSuccessful();
         database.endTransaction();
         long end = System.currentTimeMillis();
-        Log.d(TAG, "cache type : " + type + " News To DataBase cost time : " + (end - start));
+        Log.i(TAG, "cache type : " + type + " News To DataBase cost time : " + (end - start));
     }
 
     @WorkerThread
@@ -67,7 +67,7 @@ public class NewsCacheModel {
             result.add(getNewsFromDataBase(type));
         }
         long end = System.currentTimeMillis();
-        Log.d(TAG, "get all News from DataBase cost time : " + (end - start) + "\tresult size " + result.size());
+        Log.i(TAG, "get all News from DataBase cost time : " + (end - start) + "\tresult size " + result.size());
         return result;
     }
 
@@ -105,7 +105,7 @@ public class NewsCacheModel {
             Utils.close(cursor);
         }
         long end = System.currentTimeMillis();
-        Log.d(TAG, "get " + type + " News From DataBase cost " + (end - start) + "\tresult size " + result.size());
+        Log.i(TAG, "get " + type + " News From DataBase cost " + (end - start) + "\tresult size " + result.size());
         return result;
     }
 

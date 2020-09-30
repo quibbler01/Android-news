@@ -64,7 +64,6 @@ public class NewsNetWorkModel {
         String result = NetWorkUtil.requestFromNetWork(url);
         try {
             Gson gson = new Gson();
-            Log.d(TAG, "******** " + result);
             RequestBean requestBean = gson.fromJson(result, RequestBean.class);
             String code = requestBean.getReason();
             Log.d(TAG, " request result code = " + code);
