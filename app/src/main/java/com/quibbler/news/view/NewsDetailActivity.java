@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.quibbler.news.R;
+import com.quibbler.news.model.DataReport;
 
 public class NewsDetailActivity extends AppCompatActivity {
     private static final String TAG = "TAG_NewsDetailActivity";
@@ -104,6 +105,7 @@ public class NewsDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            DataReport.reportOnClickEvent(DataReport.NEWS_DETAIL_CLICK_BACK);
             finish();
             return true;
         }

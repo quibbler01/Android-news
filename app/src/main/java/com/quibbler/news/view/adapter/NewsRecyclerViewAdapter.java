@@ -20,11 +20,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.quibbler.news.NewsApplication;
 import com.quibbler.news.R;
+import com.quibbler.news.model.DataReport;
 import com.quibbler.news.model.bean.NewsDataBean;
 import com.quibbler.news.view.NewsDetailActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolderBase> {
     private static final String TAG = "TAG_NewsRecyclerViewAdapter";
@@ -180,12 +183,18 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
                 return;
             }
             Intent intent = new Intent();
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(new ComponentName(mContext, NewsDetailActivity.class));
-            intent.putExtra(NewsDetailActivity.NEWS_URL, newsDataBean.getUrl());
+            String url = newsDataBean.getUrl();
             String title = newsDataBean.getTitle();
+            intent.putExtra(NewsDetailActivity.NEWS_URL, url);
             intent.putExtra(NewsDetailActivity.NEWS_TITLE, title.substring(0, Math.min(title.length(), NewsDetailActivity.NEWS_TITLE_LENGTH)));
             ((Activity) mContext).startActivity(intent);
+            //report click event
+            Map<String, String> clickEventValues = new HashMap<>();
+            clickEventValues.put(DataReport.NEWS_ITEM_CLICK_TIME, String.valueOf(System.currentTimeMillis()));
+            clickEventValues.put(DataReport.NEWS_ITEM_CLICK_TITLE, title);
+            clickEventValues.put(DataReport.NEWS_ITEM_CLICK_URL, url);
+            DataReport.reportOnClickEvent(DataReport.NEWS_ITEM_CLICK, clickEventValues);
         }
     };
 

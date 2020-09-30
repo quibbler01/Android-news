@@ -14,6 +14,7 @@ import com.quibbler.news.presenter.NewsPresenter;
 import com.quibbler.news.util.Constant;
 import com.quibbler.news.view.adapter.NewsTopicViewpagerAdapter;
 import com.quibbler.news.view.callback.NewsCallback;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
