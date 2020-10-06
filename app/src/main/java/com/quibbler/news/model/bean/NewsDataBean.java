@@ -2,6 +2,8 @@ package com.quibbler.news.model.bean;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 /**
  * News Request Data
  *
@@ -134,5 +136,13 @@ public class NewsDataBean {
 
     public int getNewsType() {
         return whichType();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof NewsDataBean && null != uniquekey) {
+            return uniquekey.equals(((NewsDataBean) obj).getUniquekey());
+        }
+        return false;
     }
 }

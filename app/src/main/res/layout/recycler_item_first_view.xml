@@ -60,6 +60,16 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_alignEnd="@+id/description"
+        android:layout_alignBottom="@id/description"
+        android:alpha="0.15"
+        android:contentDescription="@string/news_picture_delete"
+        android:src="@drawable/delete" />
+
     <View
         android:id="@+id/divider_line"
         android:layout_width="match_parent"

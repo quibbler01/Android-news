@@ -14,4 +14,6 @@
     <string name="news_picture_one">news picture one</string>
     <string name="news_picture_two">news picture two</string>
     <string name="news_picture_three">news picture three</string>
+    <string name="news_picture_delete">delete this new item from list</string>
+    <string name="news_delete_toast">delete this new item from list</string>
 </resources>

@@ -109,4 +109,15 @@ public class NewsCacheModel {
         return result;
     }
 
+    /**
+     * delete news from local database
+     *
+     * @param id news item id
+     */
+    @WorkerThread
+    public static void deleteNewsItem(String id) {
+        SQLiteDatabase database = NewsDataBaseHelper.getsInstance().getWritableDatabase();
+        database.delete(NewsDataBaseHelper.DB_TABLE, " uniquekey = ? ", new String[]{id});
+    }
+
 }

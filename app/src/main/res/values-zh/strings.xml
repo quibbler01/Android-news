@@ -15,4 +15,6 @@
     <string name="news_picture_one">新闻图片一</string>
     <string name="news_picture_two">新闻图片二</string>
     <string name="news_picture_three">新闻图片三</string>
+    <string name="news_picture_delete">从列表中删除此新项目</string>
+    <string name="news_delete_toast">已从列表中删除此条新闻</string>
 </resources>

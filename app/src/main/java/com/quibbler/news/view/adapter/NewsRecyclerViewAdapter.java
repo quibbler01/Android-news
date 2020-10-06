@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.quibbler.news.NewsApplication;
 import com.quibbler.news.R;
 import com.quibbler.news.model.DataReport;
+import com.quibbler.news.model.TaskHandler;
 import com.quibbler.news.model.bean.NewsDataBean;
+import com.quibbler.news.model.database.NewsCacheModel;
 import com.quibbler.news.view.NewsDetailActivity;
 
 import java.util.ArrayList;
@@ -74,9 +78,10 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull NewsRecyclerViewAdapter.ViewHolderBase holder, int position) {
         final NewsDataBean newsData = mNewsData.get(position);
-        holder.itemView.setTag(newsData);
+        holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(mOnClickListener);
-
+        holder.deleteBtn.setTag(position);
+        holder.deleteBtn.setOnClickListener(mOnClickListener);
         //title
         holder.title.setText(Html.fromHtml(newsData.getTitle()));
         //author、category、time
@@ -150,6 +155,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         TextView author;
         TextView category;
         TextView date;
+        ImageView deleteBtn;
 
         public ViewHolderBase(@NonNull View itemView) {
             super(itemView);
@@ -158,6 +164,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
             author = itemView.findViewById(R.id.author_name);
             category = itemView.findViewById(R.id.category);
             date = itemView.findViewById(R.id.date);
+            deleteBtn = itemView.findViewById(R.id.delete);
         }
     }
 
@@ -178,23 +185,40 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            NewsDataBean newsDataBean = (NewsDataBean) v.getTag();
-            if (null == newsDataBean) {
-                return;
+            int position = (int) v.getTag();
+            final NewsDataBean newsDataBean = mNewsData.get(position);
+            switch (v.getId()) {
+                case R.id.delete:
+                    Log.d(TAG, "delete");
+                    mNewsData.remove(position);
+                    notifyDataSetChanged();
+                    Snackbar.make(v, R.string.news_delete_toast, 750).show();
+                    TaskHandler.executeUpdateTask(new Runnable() {
+                        @Override
+                        public void run() {
+                            NewsCacheModel.deleteNewsItem(newsDataBean.getUniquekey());
+                        }
+                    });
+                    break;
+                default:
+                    if (null == newsDataBean) {
+                        return;
+                    }
+                    Intent intent = new Intent();
+                    intent.setComponent(new ComponentName(mContext, NewsDetailActivity.class));
+                    String url = newsDataBean.getUrl();
+                    String title = newsDataBean.getTitle();
+                    intent.putExtra(NewsDetailActivity.NEWS_URL, url);
+                    intent.putExtra(NewsDetailActivity.NEWS_TITLE, title.substring(0, Math.min(title.length(), NewsDetailActivity.NEWS_TITLE_LENGTH)));
+                    ((Activity) mContext).startActivity(intent);
+                    //report click event
+                    Map<String, String> clickEventValues = new HashMap<>();
+                    clickEventValues.put(DataReport.NEWS_ITEM_CLICK_TIME, String.valueOf(System.currentTimeMillis()));
+                    clickEventValues.put(DataReport.NEWS_ITEM_CLICK_TITLE, title);
+                    clickEventValues.put(DataReport.NEWS_ITEM_CLICK_URL, url);
+                    DataReport.reportOnClickEvent(DataReport.NEWS_ITEM_CLICK, clickEventValues);
+                    break;
             }
-            Intent intent = new Intent();
-            intent.setComponent(new ComponentName(mContext, NewsDetailActivity.class));
-            String url = newsDataBean.getUrl();
-            String title = newsDataBean.getTitle();
-            intent.putExtra(NewsDetailActivity.NEWS_URL, url);
-            intent.putExtra(NewsDetailActivity.NEWS_TITLE, title.substring(0, Math.min(title.length(), NewsDetailActivity.NEWS_TITLE_LENGTH)));
-            ((Activity) mContext).startActivity(intent);
-            //report click event
-            Map<String, String> clickEventValues = new HashMap<>();
-            clickEventValues.put(DataReport.NEWS_ITEM_CLICK_TIME, String.valueOf(System.currentTimeMillis()));
-            clickEventValues.put(DataReport.NEWS_ITEM_CLICK_TITLE, title);
-            clickEventValues.put(DataReport.NEWS_ITEM_CLICK_URL, url);
-            DataReport.reportOnClickEvent(DataReport.NEWS_ITEM_CLICK, clickEventValues);
         }
     };
 
